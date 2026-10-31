@@ -6,7 +6,7 @@ class View(ft.UserControl):
         super().__init__()
         # page stuff
         self._page = page
-        self._page.title = "TdP  - Esame del 29 Giugno 2026"
+        self._page.title = "TdP - ChinookPassaParola"
         self._page.horizontal_alignment = 'CENTER'
         self._page.theme_mode = ft.ThemeMode.LIGHT
         # controller (it is not initialized. Must be initialized in the main, after the controller is created)
@@ -17,37 +17,45 @@ class View(ft.UserControl):
 
     def load_interface(self):
         # title
-        self._title = ft.Text("TdP  - Esame del 29 Giugno 2026", color="blue", size=24)
+        self._title = ft.Text("TdP - ChinookPassaParola", color="blue", size=24)
         self._page.controls.append(self._title)
 
-
-        self._ddCountry = ft.Dropdown(label="Country")
-
+        # ---------- PUNTO 1 ----------
+        self._ddGenere = ft.Dropdown(label="Genere")
+        self._txtInS = ft.TextField(label="Soglia artisti S")
         self._btnCreaGrafo = ft.ElevatedButton(text="Crea grafo",
                                                on_click=self._controller.handleCreaGrafo)
         self._btnStampaInfo = ft.ElevatedButton(text="Stampa Info",
                                                 on_click=self._controller.handleStampaInfo)
 
-
-        row1 = ft.Row([ft.Container(self._ddCountry, width=200),
-                                    ft.Container(self._btnCreaGrafo, width=150),
-                                    ft.Container(self._btnStampaInfo, width=150)],
+        row1 = ft.Row([ft.Container(self._ddGenere, width=250),
+                       ft.Container(self._txtInS, width=150),
+                       ft.Container(self._btnCreaGrafo, width=150),
+                       ft.Container(self._btnStampaInfo, width=150)],
                       alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
 
+        # ---------- PUNTO 2 ----------
+        self._ddClienteA = ft.Dropdown(label="Cliente di partenza")
+        self._ddClienteB = ft.Dropdown(label="Cliente di arrivo")
+        self._txtInK = ft.TextField(label="K (max archi)")
+        self._btnPassaParola = ft.ElevatedButton(text="Trova passaparola",
+                                                 on_click=self._controller.handlePassaParola)
 
-        self._ddClienti = ft.Dropdown(label="Clienti")
-        self._btnSequenza = ft.ElevatedButton(text="Trova sequenza clienti",
-                                              on_click=self._controller.handleSequenza)
-
-        row3 = ft.Row([ft.Container(self._ddClienti, width=255),
-                       ft.Container(self._btnSequenza, width=255)],
+        row2 = ft.Row([ft.Container(self._ddClienteA, width=250),
+                       ft.Container(self._ddClienteB, width=250),
+                       ft.Container(self._txtInK, width=120),
+                       ft.Container(self._btnPassaParola, width=180)],
                       alignment=ft.MainAxisAlignment.CENTER)
-        self._page.controls.append(row3)
+        self._page.controls.append(row2)
 
         # List View where the reply is printed
         self._txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
         self._page.controls.append(self._txt_result)
+
+        # riempio i generi all'avvio
+        self._controller.fillDDGeneri()
+
         self._page.update()
 
     @property
